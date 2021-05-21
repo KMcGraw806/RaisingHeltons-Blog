@@ -27,7 +27,7 @@ namespace RaisingHeltons.Models
 
         public BlogPost()
         {
-            this.Comments = new HashSet<Comment>();
+            Comments = new HashSet<Comment>();
         }
     }
 }

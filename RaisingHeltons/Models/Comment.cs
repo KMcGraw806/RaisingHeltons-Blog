@@ -29,7 +29,7 @@ namespace RaisingHeltons.Models
 
         public Comment()
         {
-            this.Replies = new HashSet<Reply>();
+            Replies = new HashSet<Reply>();
         }
     }
 }
