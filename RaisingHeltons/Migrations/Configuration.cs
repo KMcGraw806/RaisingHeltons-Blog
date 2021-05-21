@@ -25,6 +25,10 @@ namespace RaisingHeltons.Migrations
             {
                 roleManager.Create(new IdentityRole { Name = "Admin" });
             }
+            if (!context.Roles.Any(r => r.Name == "Moderator"))
+            {
+                roleManager.Create(new IdentityRole { Name = "Moderator" });
+            }
             #endregion
 
             #region User Creation
@@ -39,6 +43,7 @@ namespace RaisingHeltons.Migrations
                     Email = "mfrierson64@gmail.com",
                     FirstName = "Mercedes",
                     LastName = "Helton",
+                    DisplayName = "Mercedes H."
                 }, "Abc&123");
             }
             if (!context.Users.Any(u => u.Email == "kayla_mcgraw@hotmail.com"))
@@ -49,6 +54,7 @@ namespace RaisingHeltons.Migrations
                     Email = "kayla_mcgraw@hotmail.com",
                     FirstName = "Kayla",
                     LastName = "McGraw",
+                    DisplayName = "Kayla M."
                 }, "$Imone2410");
             }
             #endregion

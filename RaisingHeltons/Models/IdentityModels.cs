@@ -14,14 +14,15 @@ namespace RaisingHeltons.Models
         public string LastName { get; set; }
         public string DisplayName { get; set; }
 
+        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Reply> Replies { get; set; }
+
         public ApplicationUser()
         {
-            BlogComments = new HashSet<Comment>();
-            CommentReplies = new HashSet<Reply>();
+            Comments = new HashSet<Comment>();
+            Replies = new HashSet<Reply>();
         }
 
-        public virtual ICollection<Comment> BlogComments { get; set; }
-        public virtual ICollection<Reply> CommentReplies { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -44,7 +45,7 @@ namespace RaisingHeltons.Models
             return new ApplicationDbContext();
         }
 
-        public DbSet<BlogPost> Posts { get; set; }
+        public DbSet<BlogPost> BlogPosts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Reply> Replies { get; set; }
     }
