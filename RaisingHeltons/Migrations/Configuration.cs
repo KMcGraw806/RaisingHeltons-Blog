@@ -66,6 +66,25 @@ namespace RaisingHeltons.Migrations
             var admin2Id = userManager.FindByEmail("kayla_mcgraw@hotmail.com").Id;
             userManager.AddToRole(admin2Id, "Admin");
             #endregion
+
+            #region Category Seed
+            context.Categories.AddOrUpdate(
+                c => c.Name,
+                    new Category { Name = "Foodie" },
+                    new Category { Name = "Family" },
+                    new Category { Name = "Travel" },
+                    new Category { Name = "Recipes" },
+                    new Category { Name = "Fitness" },
+                    new Category { Name = "DIY" },
+                    new Category { Name = "Finance" },
+                    new Category { Name = "Couponing" },
+                    new Category { Name = "Pets" },
+                    new Category { Name = "Parenting" },
+                    new Category { Name = "Health" },
+                    new Category { Name = "Lifestyle" },
+                    new Category { Name = "Real Estate" }
+                );
+            #endregion
         }
     }
 }

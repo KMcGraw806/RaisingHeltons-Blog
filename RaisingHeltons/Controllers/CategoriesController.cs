@@ -10,132 +10,107 @@ using RaisingHeltons.Models;
 
 namespace RaisingHeltons.Controllers
 {
-    public class BlogPostsController : Controller
+    public class CategoriesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: BlogPosts
+        // GET: Categories
         public ActionResult Index()
         {
-            return View(db.BlogPosts.ToList());
+            return View(db.Categories.ToList());
         }
 
-        // GET: BlogPosts/Details/5
+        // GET: Categories/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BlogPost blogPost = db.BlogPosts.Find(id);
-            if (blogPost == null)
+            Category category = db.Categories.Find(id);
+            if (category == null)
             {
                 return HttpNotFound();
             }
-            return View(blogPost);
+            return View(category);
         }
 
-        // GET: BlogPosts/Create
+        // GET: Categories/Create
         public ActionResult Create()
         {
-            ViewBag.CategoryIds = new MultiSelectList(db.Categories.ToList(), "Id", "Name");
             return View();
         }
 
-        // POST: BlogPosts/Create
+        // POST: Categories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Title,Body,Abstract,Published")] BlogPost blogPost, List<int> categoryIds)
+        public ActionResult Create([Bind(Include = "Id,Name,Description")] Category category)
         {
             if (ModelState.IsValid)
             {
-                
-
-
-                blogPost.Created = DateTime.Now;
-
-                //Slug code will eventually go here
-
-
-                db.BlogPosts.Add(blogPost);
+                db.Categories.Add(category);
                 db.SaveChanges();
-
-                if (categoryIds != null)
-                {
-                    foreach (var categoryId in categoryIds)
-                    {
-                        db.CategoryBlogPosts.Add(new CategoryBlogPost
-                        {
-                            BlogPostId = blogPost.Id,
-                            CategoryId = categoryId
-                        });
-                    }
-                    db.SaveChanges();
-                }
-
                 return RedirectToAction("Index");
             }
 
-            return View(blogPost);
+            return View(category);
         }
 
-        // GET: BlogPosts/Edit/5
+        // GET: Categories/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BlogPost blogPost = db.BlogPosts.Find(id);
-            if (blogPost == null)
+            Category category = db.Categories.Find(id);
+            if (category == null)
             {
                 return HttpNotFound();
             }
-            return View(blogPost);
+            return View(category);
         }
 
-        // POST: BlogPosts/Edit/5
+        // POST: Categories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Slug,Body,Abstract,Created,Published")] BlogPost blogPost)
+        public ActionResult Edit([Bind(Include = "Id,Name,Description")] Category category)
         {
             if (ModelState.IsValid)
             {
-                blogPost.Updated = DateTime.Now;
-
-                db.Entry(blogPost).State = EntityState.Modified;
+                db.Entry(category).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(blogPost);
+            return View(category);
         }
 
-        // GET: BlogPosts/Delete/5
+        // GET: Categories/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BlogPost blogPost = db.BlogPosts.Find(id);
-            if (blogPost == null)
+            Category category = db.Categories.Find(id);
+            if (category == null)
             {
                 return HttpNotFound();
             }
-            return View(blogPost);
+            return View(category);
         }
 
-        // POST: BlogPosts/Delete/5
+        // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            BlogPost blogPost = db.BlogPosts.Find(id);
-            db.BlogPosts.Remove(blogPost);
+            Category category = db.Categories.Find(id);
+            db.Categories.Remove(category);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

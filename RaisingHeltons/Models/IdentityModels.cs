@@ -48,5 +48,7 @@ namespace RaisingHeltons.Models
         public DbSet<BlogPost> BlogPosts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Reply> Replies { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<CategoryBlogPost> CategoryBlogPosts { get; set; }
     }
 }

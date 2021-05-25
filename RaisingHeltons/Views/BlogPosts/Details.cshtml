@@ -1,82 +1,165 @@
-﻿@model RaisingHeltons.Models.BlogPost
+﻿@using RaisingHeltons.Models
+@model BlogPost
 
-@{
-    ViewBag.Title = "Details";
-}
-
-<h2>Details</h2>
-
-<div>
-    <h4>BlogPost</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Slug)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Slug)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Body)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Body)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Abstract)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Abstract)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Updated)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.MediaPath)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MediaPath)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Published)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Published)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+	<section class="py-5">
+		<div class="container py-4">
+			<div class="row text-center">
+				<div class="col-lg-8 mx-auto">
+					<a class="category-link mb-3 d-inline-block" href="#">Inspiration</a>
+					<h1>@Model.Title</h1>
+					<p>@Model.Abstract</p>
+					<ul class="list-inline mb-5">
+						<li class="list-inline-item mx-2"><a class="text-uppercase text-muted reset-anchor" href="#">BY Mercedes Helton</a></li>
+						<li class="list-inline-item mx-2"><a class="text-uppercase text-muted reset-anchor" href="#">@Model.Created.ToString("MMM dd, yyyy")</a></li>
+					</ul>
+				</div>
+			</div><img class="w-100 mb-5" src="~/img/post-single-img.jpg" alt="...">
+			<div class="row">
+				<div class="col-lg-9">
+					<p>@Model.Body</p>
+					<!-- Post tags-->
+					<div class="d-flex align-items-center flex-column flex-sm-row mb-4 p-4 bg-light">
+						<h3 class="h4 mb-3 mb-sm-0">Tags</h3>
+						<ul class="list-inline mb-0 ml-0 ml-sm-3">
+							<li class="list-inline-item my-1 mr-2"><a class="sidebar-tag-link" href="#"></a></li>
+							@*<li class="list-inline-item my-1 mr-2"><a class="sidebar-tag-link" href="#">Events</a></li>
+							<li class="list-inline-item my-1 mr-2"><a class="sidebar-tag-link" href="#">Make up</a></li>
+							<li class="list-inline-item my-1 mr-2"><a class="sidebar-tag-link" href="#">Design</a></li>*@
+						</ul>
+					</div>
+					<!-- Post share-->
+					<div class="d-flex align-items-center flex-column flex-sm-row mb-5 p-4 bg-light">
+						<h3 class="h4 mb-3 mb-sm-0">Share this post</h3>
+						<ul class="list-inline mb-0 ml-0 ml-sm-3">
+							<li class="list-inline-item mr-1 my-1"><a class="social-link-share facebook" href="#"><i class="fab fa-facebook-f mr-2"></i>Share</a></li>
+							<li class="list-inline-item mr-1 my-1"><a class="social-link-share twitter" href="#"><i class="fab fa-twitter mr-2"></i>Tweet</a></li>
+							<li class="list-inline-item mr-1 my-1"><a class="social-link-share instagram" href="#"><i class="fab fa-instagram mr-2"></i>Share</a></li>
+						</ul>
+					</div>
+					<!-- Leave comment-->
+					<h3 class="h4 mb-4">Leave a comment</h3>
+					<form class="mb-5" action="#">
+						<div class="row">
+							<div class="form-group col-lg-6">
+								<input class="form-control" type="text" name="name" placeholder="Full Name e.g. Jason Doe">
+							</div>
+							<div class="form-group col-lg-6">
+								<input class="form-control" type="email" name="email" placeholder="Email Address e.g. Jason@email.com">
+							</div>
+							<div class="form-group col-lg-12">
+								<textarea class="form-control" name="message" rows="5" placeholder="Leave your message"></textarea>
+							</div>
+							<div class="form-group col-lg-12">
+								<button class="btn btn-primary" type="submit">Submit your comment</button>
+							</div>
+						</div>
+					</form>
+					<!-- Post comments-->
+					<h3 class="h4 mb-4">Comments</h3>
+					<ul class="list-unstyled comments">
+						<li>
+							<div class="media mb-4">
+								<img class="rounded-circle shadow-sm img-fluid" src="img/person-1.jpg" alt="" width="60">
+								<div class="media-body ml-3">
+									<p class="small mb-0 text-primary">15 Aug 2019</p>
+									<h5>Jimmy Roy</h5>
+									<p class="text-muted text-small mb-2">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At.</p><a class="reset-anchor text-small" href="#"><i class="fas fa-share mr-2 text-primary"></i><strong>Reply</strong></a>
+								</div>
+							</div>
+							<ul class="list-unstyled ml-5">
+								<li>
+									<div class="media mb-4">
+										<img class="rounded-circle shadow-sm img-fluid" src="img/person-2.jpg" alt="" width="60">
+										<div class="media-body ml-3">
+											<p class="small mb-0 text-primary">19 Sep 2019</p>
+											<h5>Melissa Johanson</h5>
+											<p class="text-muted text-small mb-2">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At.</p><a class="reset-anchor text-small" href="#"><i class="fas fa-share mr-2 text-primary"></i><strong>Reply</strong></a>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<div class="media mb-4">
+								<img class="rounded-circle shadow-sm img-fluid" src="img/person-3.jpg" alt="" width="60">
+								<div class="media-body ml-3">
+									<p class="small mb-0 text-primary">10 Oct 2019</p>
+									<h5>David Nguyen</h5>
+									<p class="text-muted text-small mb-2">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At.</p><a class="reset-anchor text-small" href="#"><i class="fas fa-share mr-2 text-primary"></i><strong>Reply</strong></a>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<!-- Blog sidebar-->
+				<div class="col-lg-3">
+					<!-- About category-->
+					<div class="card rounded-0 border-0 bg-light mb-4 py-lg-4">
+						<div class="card-body text-center">
+							<h2 class="h3 mb-3">About me</h2><img class="rounded-circle mb-3" src="img/author.jpg" alt="..." width="100">
+							<p class="text-small text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
+							<ul class="list-inline small mb-0 text-dark">
+								<li class="list-inline-item"><a class="reset-anchor" href="#"><i class="fab fa-facebook-f"></i></a></li>
+								<li class="list-inline-item"><a class="reset-anchor" href="#"><i class="fab fa-twitter"></i></a></li>
+								<li class="list-inline-item"><a class="reset-anchor" href="#"><i class="fab fa-instagram"></i></a></li>
+								<li class="list-inline-item"><a class="reset-anchor" href="#"><i class="fab fa-linkedin"></i></a></li>
+								<li class="list-inline-item"><a class="reset-anchor" href="#"><i class="fab fa-youtube"></i></a></li>
+							</ul>
+						</div>
+					</div>
+					<!-- Recent posts-->
+					<div class="card rounded-0 border-0 mb-4">
+						<div class="card-body p-0">
+							<h2 class="h5 mb-3">Recent posts</h2>
+							<div class="media mb-3">
+								<a class="d-block" href="post.html"><img class="img-fluid" src="img/recent-post-1.jpg" alt="" width="70"></a>
+								<div class="media-body ml-3">
+									<h6> <a class="reset-anchor" href="post.html">Crazy goodness</a></h6>
+									<p class="text-small text-muted line-height-sm mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+								</div>
+							</div>
+							<div class="media mb-3">
+								<a class="d-block" href="post.html"><img class="img-fluid" src="img/recent-post-2.jpg" alt="" width="70"></a>
+								<div class="media-body ml-3">
+									<h6> <a class="reset-anchor" href="post.html">Black hat</a></h6>
+									<p class="text-small text-muted line-height-sm mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+								</div>
+							</div>
+							<div class="media mb-3">
+								<a class="d-block" href="post.html"><img class="img-fluid" src="img/recent-post-3.jpg" alt="" width="70"></a>
+								<div class="media-body ml-3">
+									<h6> <a class="reset-anchor" href="post.html">My office makeover</a></h6>
+									<p class="text-small text-muted line-height-sm mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Categories-->
+					<div class="card rounded-0 border-0 mb-4">
+						<div class="card-body p-0">
+							<h2 class="h5 mb-3">Trending categories</h2><a class="category-block category-block-sm bg-center bg-cover mb-2" style="background: url(img/category-bg-1.jpg)" href="#"><span class="category-block-title">Interior Design</span></a><a class="category-block category-block-sm bg-center bg-cover mb-2" style="background: url(img/category-bg-2.jpg)" href="#"><span class="category-block-title">Fashion</span></a><a class="category-block category-block-sm bg-center bg-cover mb-2" style="background: url(img/category-bg-3.jpg)" href="#"><span class="category-block-title">Tips &amp; Tricks</span></a>
+						</div>
+					</div>
+					<!-- Tags-->
+					<div class="card rounded-0 border-0 mb-4">
+						<div class="card-body p-0">
+							<h2 class="h5 mb-3">Tags cloud</h2>
+							<ul class="list-inline">
+								<li class="list-inline-item my-1 mr-2"><a class="sidebar-tag-link" href="#">Art</a></li>
+								<li class="list-inline-item my-1 mr-2"><a class="sidebar-tag-link" href="#">Events</a></li>
+								<li class="list-inline-item my-1 mr-2"><a class="sidebar-tag-link" href="#">Make up</a></li>
+								<li class="list-inline-item my-1 mr-2"><a class="sidebar-tag-link" href="#">Design</a></li>
+								<li class="list-inline-item my-1 mr-2"><a class="sidebar-tag-link" href="#">Fashion</a></li>
+								<li class="list-inline-item my-1 mr-2"><a class="sidebar-tag-link" href="#">Inspiration</a></li>
+								<li class="list-inline-item my-1 mr-2"><a class="sidebar-tag-link" href="#">Business</a></li>
+							</ul>
+						</div>
+					</div>
+					<!-- Ad-->
+					<div class="card rounded-0 border-0 mb-4">
+						<div class="card-body p-0"><a class="d-block" href="#"><img class="img-fluid" src="img/banner.jpg" alt=""></a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
