@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
+using RaisingHeltons.Helpers;
 using RaisingHeltons.Models;
 
 namespace RaisingHeltons.Controllers
@@ -21,13 +23,13 @@ namespace RaisingHeltons.Controllers
         }
 
         // GET: BlogPosts/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(string Slug)
         {
-            if (id == null)
+            if (String.IsNullOrWhiteSpace(Slug))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BlogPost blogPost = db.BlogPosts.Find(id);
+            BlogPost blogPost = db.BlogPosts.FirstOrDefault(p => p.Slug == Slug);
             if (blogPost == null)
             {
                 return HttpNotFound();
@@ -38,7 +40,7 @@ namespace RaisingHeltons.Controllers
         // GET: BlogPosts/Create
         public ActionResult Create()
         {
-            ViewBag.CategoryIds = new MultiSelectList(db.Categories.ToList(), "Id", "Name");
+            ViewBag.CategoryIds = new SelectList(db.Categories.ToList(), "Id", "Name");
             return View();
         }
 
@@ -51,9 +53,19 @@ namespace RaisingHeltons.Controllers
         {
             if (ModelState.IsValid)
             {
-                
+                var Slug = StringUtilities.URLFriendly(blogPost.Title);
+                if (String.IsNullOrWhiteSpace(Slug))
+                {
+                    ModelState.AddModelError("Title", "Invalid Title");
+                    return View(blogPost);
+                }
+                if (db.BlogPosts.Any(p => p.Slug == Slug))
+                {
+                    ModelState.AddModelError("Title", "The title must be unique");
+                    return View(blogPost);
+                }
 
-
+                blogPost.Slug = Slug;
                 blogPost.Created = DateTime.Now;
 
                 //Slug code will eventually go here

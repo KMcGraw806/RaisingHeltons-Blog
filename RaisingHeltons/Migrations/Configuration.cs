@@ -82,7 +82,8 @@ namespace RaisingHeltons.Migrations
                     new Category { Name = "Parenting" },
                     new Category { Name = "Health" },
                     new Category { Name = "Lifestyle" },
-                    new Category { Name = "Real Estate" }
+                    new Category { Name = "Real Estate" },
+                    new Category { Name = "Photography" }
                 );
             #endregion
         }

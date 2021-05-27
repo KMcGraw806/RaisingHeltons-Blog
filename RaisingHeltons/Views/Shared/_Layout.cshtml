@@ -36,7 +36,7 @@
 					<li class="list-inline-item"><a class="reset-anchor" href="#"><i class="fab fa-instagram"></i></a></li>
 					<li class="list-inline-item"><a class="reset-anchor" href="#"><i class="fab fa-linkedin"></i></a></li>
 					<li class="list-inline-item"><a class="reset-anchor" href="#"><i class="fab fa-youtube"></i></a></li>
-				</ul><a class="navbar-brand" href="index.html"><img src="img/logo.svg" alt="..." width="150"></a><a class="reset-anchor text-small mb-0 h6 d-none d-lg-block" href="mailto:Juliette@email.com"><i class="far fa-envelope mr-2 text-primary"></i>Juliette@email.com</a>
+				</ul><a class="navbar-brand" href=@Url.Action("Index", "Home")><img src="img/logo.svg" alt="..." width="150"></a><a class="reset-anchor text-small mb-0 h6 d-none d-lg-block" href="mailto:Juliette@email.com"><i class="far fa-envelope mr-2 text-primary"></i>Juliette@email.com</a>
 			</div>
 		</nav>
 		<nav class="navbar navbar-expand-lg navbar-light border-top border-bottom border-light">
@@ -73,7 +73,7 @@
 
 	@RenderBody()
 
-	<footer class="py-4" style="background: #111">
+	<footer class="py-4 mt-auto" style="background: #111">
 		<div class="container text-center">
 			<div class="row align-items-center">
 				<div class="col-md-4 text-lg-left"><img src="img/logo-footer.svg" alt="..." width="120"></div>
@@ -100,6 +100,7 @@
 	<script src="~/Scripts/bootstrap.bundle.min.js"></script>
 	<script src="~/Scripts/lightbox.min.js"></script>
 	<script src="~/Scripts/front.js"></script>
+	@RenderSection("scripts", required: false)
 	<!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 </body>
