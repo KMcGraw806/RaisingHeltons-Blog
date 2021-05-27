@@ -53,19 +53,20 @@ namespace RaisingHeltons.Controllers
         {
             if (ModelState.IsValid)
             {
-                var Slug = StringUtilities.URLFriendly(blogPost.Title);
-                if (String.IsNullOrWhiteSpace(Slug))
+                var slug = StringUtilities.URLFriendly(blogPost.Title);
+
+                if (String.IsNullOrWhiteSpace(slug))
                 {
                     ModelState.AddModelError("Title", "Invalid Title");
                     return View(blogPost);
                 }
-                if (db.BlogPosts.Any(p => p.Slug == Slug))
+                if (db.BlogPosts.Any(p => p.Slug == slug))
                 {
-                    ModelState.AddModelError("Title", "The title must be unique");
+                    ModelState.AddModelError("Title", "The Title appears to have been used before and must be unique");
                     return View(blogPost);
                 }
 
-                blogPost.Slug = Slug;
+                blogPost.Slug = slug;
                 blogPost.Created = DateTime.Now;
 
                 //Slug code will eventually go here
@@ -117,6 +118,25 @@ namespace RaisingHeltons.Controllers
         {
             if (ModelState.IsValid)
             {
+                var slug = StringUtilities.URLFriendly(blogPost.Title);
+
+                if(slug != blogPost.Slug)
+                {
+                    if (String.IsNullOrWhiteSpace(slug))
+                    {
+                        ModelState.AddModelError("Title", "Invalid Title");
+                        return View(blogPost);
+                    }
+                    
+                    if (db.BlogPosts.Any(p => p.Slug == slug))
+                    {
+                        ModelState.AddModelError("Title", "The Title appears to have been used before and must be unique");
+                        return View(blogPost);
+                    }
+
+                    blogPost.Slug = slug;
+                }
+
                 blogPost.Updated = DateTime.Now;
 
                 db.Entry(blogPost).State = EntityState.Modified;
