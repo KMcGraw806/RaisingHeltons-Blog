@@ -7,7 +7,10 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @if (User.IsInRole("Admin"))
+	{
+        @Html.ActionLink("Create New", "Create")
+	}
 </p>
 <table class="table">
     <tr>
@@ -59,7 +62,10 @@
             @Html.DisplayFor(modelItem => item.Updated)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.MediaPath)
+            @if (item.MediaPath != null)
+			{ 
+                <img class="img-fluid" src="@item.MediaPath" alt="" />
+            }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Published)

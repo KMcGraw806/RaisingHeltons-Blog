@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -9,6 +10,7 @@ using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using RaisingHeltons.Helpers;
 using RaisingHeltons.Models;
+using RaisingHeltons.ViewModels;
 
 namespace RaisingHeltons.Controllers
 {
@@ -25,22 +27,25 @@ namespace RaisingHeltons.Controllers
         // GET: BlogPosts/Details/5
         public ActionResult Details(string Slug)
         {
+            var model = new BlogPostDetailsVM();
             if (String.IsNullOrWhiteSpace(Slug))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BlogPost blogPost = db.BlogPosts.FirstOrDefault(p => p.Slug == Slug);
-            if (blogPost == null)
+            model.BlogPost = db.BlogPosts.FirstOrDefault(p => p.Slug == Slug);
+            if (model == null)
             {
                 return HttpNotFound();
             }
-            return View(blogPost);
+            model.SidePosts = db.BlogPosts.ToList();
+            return View(model);
         }
 
         // GET: BlogPosts/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
-            ViewBag.CategoryIds = new SelectList(db.Categories.ToList(), "Id", "Name");
+            //ViewBag.CategoryIds = new SelectList(db.Categories.ToList(), "Id", "Name");
             return View();
         }
 
@@ -49,46 +54,54 @@ namespace RaisingHeltons.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Title,Body,Abstract,Published")] BlogPost blogPost, List<int> categoryIds)
+        public ActionResult Create([Bind(Include = "Title,Slug,Body,MediaPath,Abstract,Published")] BlogPost blogPost, HttpPostedFileBase image)
         {
             if (ModelState.IsValid)
             {
                 var slug = StringUtilities.URLFriendly(blogPost.Title);
-
-                if (String.IsNullOrWhiteSpace(slug))
+                if(ImageUploadValidator.IsWebFriendlyImage(image))
                 {
-                    ModelState.AddModelError("Title", "Invalid Title");
-                    return View(blogPost);
+                    var fileName = Path.GetFileName(image.FileName);
+                    var justFileName = Path.GetFileNameWithoutExtension(fileName);
+                    justFileName = StringUtilities.URLFriendly(justFileName);
+                    fileName = $"{justFileName}_{DateTime.Now.Ticks}{Path.GetExtension(fileName)}";
+                    image.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
+                    blogPost.MediaPath = "/Uploads/" + fileName;
                 }
-                if (db.BlogPosts.Any(p => p.Slug == slug))
+                if (slug != blogPost.Slug)
                 {
-                    ModelState.AddModelError("Title", "The Title appears to have been used before and must be unique");
-                    return View(blogPost);
-                }
+                    if (String.IsNullOrWhiteSpace(slug))
+                    {
+                        ModelState.AddModelError("Title", "Invalid Title");
+                        return View(blogPost);
+                    }
+                    if (db.BlogPosts.Any(p => p.Slug == slug))
+                    {
+                        ModelState.AddModelError("Title", "The Title appears to have been used before and must be unique");
+                        return View(blogPost);
+                    }
 
-                blogPost.Slug = slug;
+                    blogPost.Slug = slug;
+                }
+                
                 blogPost.Created = DateTime.Now;
-
-                //Slug code will eventually go here
-
-
                 db.BlogPosts.Add(blogPost);
                 db.SaveChanges();
-
-                if (categoryIds != null)
-                {
-                    foreach (var categoryId in categoryIds)
-                    {
-                        db.CategoryBlogPosts.Add(new CategoryBlogPost
-                        {
-                            BlogPostId = blogPost.Id,
-                            CategoryId = categoryId
-                        });
-                    }
-                    db.SaveChanges();
-                }
-
                 return RedirectToAction("Index");
+
+                //if (categoryIds != null)
+                //{
+                //    foreach (var categoryId in categoryIds)
+                //    {
+                //        db.CategoryBlogPosts.Add(new CategoryBlogPost
+                //        {
+                //            BlogPostId = blogPost.Id,
+                //            CategoryId = categoryId
+                //        });
+                //    }
+                //    db.SaveChanges();
+                //}
+
             }
 
             return View(blogPost);
@@ -114,7 +127,7 @@ namespace RaisingHeltons.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Slug,Body,Abstract,Created,Published")] BlogPost blogPost)
+        public ActionResult Edit([Bind(Include = "Id,Title,Slug,Body,MediaPath,Abstract,Created,Published")] BlogPost blogPost, HttpPostedFileBase image)
         {
             if (ModelState.IsValid)
             {
@@ -135,6 +148,14 @@ namespace RaisingHeltons.Controllers
                     }
 
                     blogPost.Slug = slug;
+                }
+
+                if (ImageUploadValidator.IsWebFriendlyImage(image))
+                {
+                    var fileName = Path.GetFileName(image.FileName);
+                    image.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
+                    blogPost.MediaPath = "/Uploads/" + fileName;
+
                 }
 
                 blogPost.Updated = DateTime.Now;
