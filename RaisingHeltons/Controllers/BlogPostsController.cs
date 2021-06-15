@@ -33,11 +33,12 @@ namespace RaisingHeltons.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             model.BlogPost = db.BlogPosts.FirstOrDefault(p => p.Slug == Slug);
-            if (model == null)
+            model.SidePosts = db.BlogPosts.OrderByDescending(p => p.Created).Take(3).ToList();
+            if (model.BlogPost == null)
             {
                 return HttpNotFound();
             }
-            model.SidePosts = db.BlogPosts.ToList();
+            //model.BlogPosts = db.BlogPosts.ToList();
             return View(model);
         }
 

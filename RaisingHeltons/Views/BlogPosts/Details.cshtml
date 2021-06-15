@@ -1,21 +1,21 @@
-﻿@using RaisingHeltons.ViewModels
+﻿@model RaisingHeltons.ViewModels.BlogPostDetailsVM
 
 	<section class="py-5">
 		<div class="container py-4">
 			<div class="row text-center">
 				<div class="col-lg-8 mx-auto">
 					<a class="category-link mb-3 d-inline-block" href="#">Inspiration</a>
-					<h1>@Model.Title</h1>
-					<p>@Model.Abstract</p>
+					<h1>@Model.BlogPost.Title</h1>
+					<p>@Model.BlogPost.Abstract</p>
 					<ul class="list-inline mb-5">
 						<li class="list-inline-item mx-2"><a class="text-uppercase text-muted reset-anchor" href="#">BY Mercedes Helton</a></li>
-						<li class="list-inline-item mx-2"><a class="text-uppercase text-muted reset-anchor" href="#">@Model.Created.ToString("MMM dd, yyyy")</a></li>
+						<li class="list-inline-item mx-2"><a class="text-uppercase text-muted reset-anchor" href="#">@Model.BlogPost.Created.ToString("MMM dd, yyyy")</a></li>
 					</ul>
 				</div>
 			</div>
-			@if (Model.MediaPath != null)
+			@if (Model.BlogPost.MediaPath != null)
 			{
-				<img class="img-fluid" src="@Model.MediaPath" alt="" />
+				<img class="img-fluid" src="@Model.BlogPost.MediaPath" alt="" />
 			}
 			else
 			{
@@ -23,7 +23,7 @@
 			}
 			<div class="row">
 				<div class="col-lg-9">
-					<p>@Html.Raw(Model.Body)</p>
+					<p>@Html.Raw(Model.BlogPost.Body)</p>
 					<!-- Post tags-->
 					<div class="d-flex align-items-center flex-column flex-sm-row mb-4 p-4 bg-light">
 						<h3 class="h4 mb-3 mb-sm-0">Tags</h3>
@@ -118,27 +118,16 @@
 					<div class="card rounded-0 border-0 mb-4">
 						<div class="card-body p-0">
 							<h2 class="h5 mb-3">Recent posts</h2>
-							<div class="media mb-3">
-								<a class="d-block" href="post.html"><img class="img-fluid" src="img/recent-post-1.jpg" alt="" width="70"></a>
-								<div class="media-body ml-3">
-									<h6> <a class="reset-anchor" href="post.html">Crazy goodness</a></h6>
-									<p class="text-small text-muted line-height-sm mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+							@foreach (var post in Model.SidePosts)
+							{
+								<div class="media mb-3">
+									<a class="d-block" href="@Url.Action("Details", new { slug = post.Slug})"><img class="img-fluid" src="@post.MediaPath" alt="" width="70"></a>
+									<div class="media-body ml-3">
+										<h6> <a class="reset-anchor" href="post.html">@post.Title</a></h6>
+										<p class="text-small text-muted line-height-sm mb-0">@post.Abstract</p>
+									</div>
 								</div>
-							</div>
-							<div class="media mb-3">
-								<a class="d-block" href="post.html"><img class="img-fluid" src="img/recent-post-2.jpg" alt="" width="70"></a>
-								<div class="media-body ml-3">
-									<h6> <a class="reset-anchor" href="post.html">Black hat</a></h6>
-									<p class="text-small text-muted line-height-sm mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-								</div>
-							</div>
-							<div class="media mb-3">
-								<a class="d-block" href="post.html"><img class="img-fluid" src="img/recent-post-3.jpg" alt="" width="70"></a>
-								<div class="media-body ml-3">
-									<h6> <a class="reset-anchor" href="post.html">My office makeover</a></h6>
-									<p class="text-small text-muted line-height-sm mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-								</div>
-							</div>
+							}
 						</div>
 					</div>
 					<!-- Categories-->

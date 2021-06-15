@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -19,8 +20,10 @@ namespace RaisingHeltons.Models
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
 
+        [Display(Name = "Image")]
         public string MediaPath { get; set; }
 
+        [Display(Name = "Publish?")]
         public bool Published { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
